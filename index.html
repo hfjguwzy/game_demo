@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>海王遗孤</title>
+  <meta name="description" content="《海王遗孤》是一部个人创作的恋爱模拟视觉小说 demo。这一页是宣传封面，也是正在编写的设定条目。">
+  <meta name="theme-color" content="#07141c">
+  <meta property="og:title" content="海王遗孤">
+  <meta property="og:description" content="恋爱模拟 · 视觉小说。个人演示。潮水会退。名字不会。">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%2307141c' width='32' height='32'/%3E%3Cpath d='M4 20c3-4 6-4 8 0s5 4 8 0 5-4 8 0' fill='none' stroke='%23c4a574' stroke-width='1.6'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,620;1,9..144,460&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --abyss: #07141c;
+      --deep: #102833;
+      --tide: #1d6d72;
+      --foam: #e7f1ee;
+      --paper: #f3efe6;
+      --paper-2: #e7e1d4;
+      --ink: #1a2428;
+      --ink-soft: #3d4c52;
+      --gold: #c4a574;
+      --gold-deep: #8a6a45;
+      --seal: #9c3b2e;
+      --line: rgba(26, 36, 40, 0.14);
+      --serif: "Noto Serif SC", "Songti SC", "Source Han Serif SC", "STSong", "SimSun", serif;
+      --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      --latin: "Fraunces", "Palatino Linotype", Palatino, "Times New Roman", serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      padding-right: 2.1rem;
+      background: var(--abyss);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-weight: 500;
+      line-height: 1.85;
+      text-rendering: optimizeLegibility;
+    }
+    ::selection { background: #c9e3dc; color: var(--abyss); }
+    a { color: inherit; }
+    a:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .skip {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      z-index: 20;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 0.4rem 0.7rem;
+    }
+    .skip:focus { top: 1rem; }
+
+    .tide {
+      position: fixed;
+      inset: 0 0 0 auto;
+      width: 2.1rem;
+      z-index: 5;
+      pointer-events: none;
+      border-left: 1px solid rgba(196, 165, 116, 0.28);
+      background: rgba(7, 20, 28, 0.35);
+    }
+    .tide-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+      transform: scaleY(0);
+      transform-origin: bottom center;
+      background: linear-gradient(to top, rgba(196, 165, 116, 0.95), rgba(29, 109, 114, 0.85) 55%, rgba(231, 241, 238, 0.2));
+    }
+    .tide-label {
+      position: absolute;
+      top: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      writing-mode: vertical-rl;
+      letter-spacing: 0.42em;
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      color: rgba(243, 239, 230, 0.72);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      padding: clamp(4.5rem, 12vh, 8rem) clamp(1.4rem, 6vw, 7rem) 7rem;
+      overflow: hidden;
+      color: var(--foam);
+      background:
+        radial-gradient(900px 520px at 12% 80%, rgba(29, 109, 114, 0.45), transparent 70%),
+        radial-gradient(700px 480px at 90% 10%, rgba(196, 165, 116, 0.16), transparent 65%),
+        linear-gradient(165deg, #102833 0%, var(--abyss) 48%, #061016 100%);
+    }
+    .chart {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.55;
+    }
+    .hero-watermark {
+      position: absolute;
+      right: -0.08em;
+      bottom: -0.22em;
+      margin: 0;
+      font-size: clamp(10rem, 38vw, 28rem);
+      line-height: 0.8;
+      color: rgba(231, 241, 238, 0.045);
+      letter-spacing: -0.06em;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 44rem;
+    }
+    .kicker {
+      margin: 0 0 1.6rem;
+      font-family: var(--latin);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .kicker span { white-space: nowrap; }
+    .kicker span:not(:last-child)::after {
+      content: " · ";
+      letter-spacing: 0;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(3.6rem, 11vw, 8.4rem);
+      font-weight: 600;
+      line-height: 1.02;
+      letter-spacing: 0.12em;
+      padding-left: 0.12em;
+    }
+    .provisional {
+      margin: 2.2rem 0 0.35rem;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      color: rgba(231, 241, 238, 0.82);
+    }
+    .tagline {
+      margin: 0;
+      max-width: 16em;
+      font-size: clamp(1.45rem, 3vw, 2.15rem);
+      font-weight: 500;
+      line-height: 1.45;
+      letter-spacing: 0.08em;
+    }
+    .deck {
+      margin: 1.4rem 0 0;
+      max-width: 34em;
+      color: rgba(231, 241, 238, 0.78);
+      font-size: 1.02rem;
+    }
+    .enter {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 2.4rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid rgba(196, 165, 116, 0.85);
+      color: var(--foam);
+      font-family: var(--sans);
+      font-size: 0.84rem;
+      letter-spacing: 0.22em;
+      text-decoration: none;
+    }
+    .enter::after { content: "↓"; color: var(--gold); }
+    .enter:hover { color: var(--gold); }
+
+    .seal {
+      position: absolute;
+      z-index: 2;
+      right: clamp(1.2rem, 7vw, 7.5rem);
+      bottom: 5.25rem;
+      width: 5.6rem;
+      height: 5.6rem;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--seal);
+      border-radius: 50%;
+      background: rgba(243, 239, 230, 0.94);
+      box-shadow: inset 0 0 0 4px rgba(243, 239, 230, 0.94), inset 0 0 0 6px var(--seal);
+      color: var(--seal);
+      transform: rotate(-14deg);
+      font-size: 0.92rem;
+      letter-spacing: 0.18em;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .level {
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      right: 0;
+      bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0 clamp(1.4rem, 6vw, 7rem);
+      color: rgba(196, 165, 116, 0.78);
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      pointer-events: none;
+    }
+    .level i {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(196, 165, 116, 0.7), rgba(196, 165, 116, 0));
+      font-style: normal;
+    }
+
+    main {
+      background:
+        linear-gradient(180deg, rgba(26, 36, 40, 0.05), transparent 90px),
+        var(--paper);
+      color: var(--ink);
+    }
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 5.2rem clamp(1.2rem, 4vw, 2rem) 4.5rem;
+    }
+    .masthead {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 0.55rem 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 3px solid var(--ink);
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+    }
+    .masthead b { font-weight: 500; }
+    .edition-note {
+      margin: 1rem 0 0;
+      max-width: 46rem;
+      color: var(--ink-soft);
+      font-size: 0.98rem;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 9.5rem minmax(0, 1fr) 16.5rem;
+      gap: 2.2rem 2.4rem;
+      align-items: start;
+      margin-top: 2.4rem;
+    }
+    .toc {
+      position: sticky;
+      top: 1.4rem;
+      display: grid;
+      gap: 0.15rem;
+      padding-top: 0.3rem;
+    }
+    .toc p {
+      margin: 0 0 0.55rem;
+      font-family: var(--latin);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+    }
+    .toc a {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.28rem 0;
+      border-top: 1px solid transparent;
+      color: var(--ink-soft);
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      text-decoration: none;
+    }
+    .toc a span {
+      font-family: var(--latin);
+      font-size: 0.75rem;
+      color: var(--gold-deep);
+    }
+    .toc a.is-current {
+      color: var(--ink);
+      border-top-color: var(--ink);
+    }
+
+    .infobox {
+      position: sticky;
+      top: 1.4rem;
+      background: #f7f4ed;
+      border: 1px solid var(--line);
+    }
+    .infobox header {
+      padding: 0.9rem 1rem 0.8rem;
+      background: var(--deep);
+      color: var(--foam);
+    }
+    .infobox header p {
+      margin: 0;
+      font-family: var(--latin);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .infobox header strong {
+      display: block;
+      margin-top: 0.15rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+    .infobox dl { margin: 0; }
+    .infobox dl div {
+      display: grid;
+      grid-template-columns: 5.2rem 1fr;
+      gap: 0.4rem;
+      padding: 0.62rem 1rem;
+      border-top: 1px solid var(--line);
+    }
+    .infobox dt {
+      margin: 0;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-soft);
+    }
+    .infobox dd { margin: 0; font-size: 0.95rem; }
+    .infobox .pending { color: var(--seal); }
+
+    article { min-width: 0; }
+    article section {
+      scroll-margin-top: 1.25rem;
+      padding: 2.5rem 0 0.4rem;
+      border-top: 1px solid var(--line);
+    }
+    article section:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+    article h2 {
+      margin: 0 0 0.9rem;
+      font-size: clamp(1.7rem, 3vw, 2.25rem);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.25;
+    }
+    article h2::before {
+      content: attr(data-index);
+      display: block;
+      margin-bottom: 0.25rem;
+      font-family: var(--latin);
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      color: var(--gold-deep);
+    }
+    article h3 {
+      margin: 1.6rem 0 0.7rem;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    article p { margin: 0 0 0.9rem; max-width: 42rem; }
+    code {
+      font-family: Consolas, "Sarasa Mono SC", "Cascadia Code", monospace;
+      font-size: 0.92em;
+    }
+    .lead { font-size: 1.12rem; }
+
+    .alts {
+      display: grid;
+      gap: 0.7rem;
+      margin: 1.1rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .alts li {
+      max-width: 42rem;
+      padding-left: 0.9rem;
+      border-left: 2px solid var(--gold);
+      color: var(--ink-soft);
+    }
+
+    .queries {
+      list-style: none;
+      margin: 1.2rem 0 0;
+      padding: 0;
+      display: grid;
+      gap: 0;
+    }
+    .queries li {
+      display: grid;
+      grid-template-columns: 4.6rem minmax(0, 1fr);
+      gap: 0.75rem;
+      align-items: baseline;
+      max-width: 44rem;
+      padding: 0.85rem 0;
+      border-top: 1px solid var(--line);
+    }
+    .todo {
+      display: inline-block;
+      padding: 0.08rem 0.35rem 0.12rem;
+      border: 1px solid var(--seal);
+      color: var(--seal);
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .queries p { margin: 0; }
+
+    .dossier {
+      width: min(100%, 42rem);
+      border-collapse: collapse;
+      margin-top: 0.4rem;
+    }
+    .dossier th,
+    .dossier td {
+      padding: 0.7rem 0.2rem;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: baseline;
+      font-weight: 500;
+    }
+    .dossier th {
+      width: 9.5rem;
+      font-family: var(--sans);
+      font-size: 0.86rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+    }
+
+    .known {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.35rem 1rem;
+      max-width: 42rem;
+      margin: 1rem 0 0;
+      padding: 0;
+    }
+    .known dt {
+      margin: 0;
+      font-family: var(--sans);
+      font-size: 0.86rem;
+      color: var(--ink-soft);
+    }
+    .known dd { margin: 0; }
+
+    .colophon {
+      background: var(--abyss);
+      color: rgba(231, 241, 238, 0.72);
+    }
+    .colophon .wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding-top: 1.6rem;
+      padding-bottom: 1.8rem;
+      font-family: var(--sans);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+    }
+    .colophon p { margin: 0; }
+    .colophon em {
+      font-family: var(--latin);
+      font-style: italic;
+      font-weight: 460;
+      letter-spacing: 0.04em;
+      color: var(--gold);
+    }
+
+    @media (max-width: 1080px) {
+      body { padding-right: 0; }
+      .tide { display: none; }
+      .shell { grid-template-columns: 1fr; gap: 1.5rem; }
+      .toc, .infobox { position: static; }
+      .infobox { order: -1; }
+      .toc {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem 0.9rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid var(--line);
+      }
+      .toc p { width: 100%; margin-bottom: 0.1rem; }
+      .toc a { border-top: 0; }
+      .wrap { padding-right: clamp(1.2rem, 4vw, 2rem); }
+    }
+    @media (max-height: 760px) {
+      .level, .seal { display: none; }
+    }
+    @media (max-width: 640px) {
+      .masthead { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+      .kicker { font-size: 0.7rem; letter-spacing: 0.14em; line-height: 1.8; }
+      h1 { letter-spacing: 0.06em; padding-left: 0.06em; }
+      .level { display: none; }
+      .seal { width: 4.6rem; height: 4.6rem; font-size: 0.78rem; right: 1rem; }
+      .queries li, .known, .infobox dl div { grid-template-columns: 1fr; gap: 0.25rem; }
+      .dossier th { width: 6.5rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .tide-fill { transition: none; }
+    }
+    @media print {
+      .tide, .chart, .hero-watermark, .seal, .level, .enter, .toc { display: none; }
+      .hero { min-height: 0; background: white; color: black; }
+      .colophon, .infobox header { background: white; color: black; }
+      main, body { background: white; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#overview">跳到条目</a>
+  <div class="tide" aria-hidden="true">
+    <span class="tide-fill" id="tide-fill"></span>
+    <span class="tide-label">潮位</span>
+  </div>
+
+  <header class="hero">
+    <svg class="chart" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="rgba(196,165,116,0.35)" stroke-width="0.8">
+        <circle cx="160" cy="640" r="90"></circle>
+        <circle cx="160" cy="640" r="180"></circle>
+        <circle cx="160" cy="640" r="290"></circle>
+        <circle cx="160" cy="640" r="420"></circle>
+        <circle cx="160" cy="640" r="560"></circle>
+        <path d="M160 640 L1180 80"></path>
+        <path d="M160 640 L1120 760"></path>
+        <path d="M160 80 V760"></path>
+        <path d="M40 560 H1160"></path>
+        <path d="M40 700 H1160"></path>
+      </g>
+    </svg>
+    <p class="hero-watermark">海</p>
+    <div class="hero-inner">
+      <p class="kicker"><span>Visual Novel</span><span>Dating Sim</span><span>Personal Demo</span></p>
+      <h1>海王遗孤</h1>
+      <p class="provisional">暂定宣传语</p>
+      <p class="tagline">潮水会退。名字不会。</p>
+      <p class="deck">个人创作的恋爱模拟视觉小说。封面先立在这里，故事随后写进下面的条目。还没决定的地方，都留着朱印。</p>
+      <a class="enter" href="#gazette">阅读设定条目</a>
+    </div>
+    <p class="level"><i></i>平均潮位 · 未测定</p>
+    <div class="seal" aria-hidden="true">未<br>定<br>稿</div>
+  </header>
+
+  <main id="gazette">
+    <div class="wrap">
+      <div class="masthead">
+        <b>海王遗孤 · 设定公报</b>
+        <span>卷一 · 空白页</span>
+        <span>二〇二六年十一月建档</span>
+      </div>
+      <p class="edition-note">这一页是封面，也是一条正在编写的条目。朱红色的 TODO 表示还没决定。确定之后，直接换掉对应的句子即可。</p>
+
+      <div class="shell">
+        <nav class="toc" aria-label="条目目录">
+          <p>Contents</p>
+          <a href="#overview"><span>01</span>概要</a>
+          <a href="#story"><span>02</span>故事</a>
+          <a href="#stage"><span>03</span>舞台</a>
+          <a href="#cast"><span>04</span>人物</a>
+          <a href="#play"><span>05</span>玩法</a>
+          <a href="#make"><span>06</span>制作</a>
+        </nav>
+
+        <article>
+          <section id="overview">
+            <h2 data-index="01">概要</h2>
+            <p class="lead">《海王遗孤》是一部恋爱模拟向的视觉小说，只作为个人演示，不做商业发行。</p>
+            <p>标题把「海王」和「遗孤」放在一起：一边是会被潮水、港口和传闻放大的名字，一边是还得在这些名字后面继续过日子的人。名字先于情节存在。它具体指谁，这一页故意不替故事回答。</p>
+            <p>「海王」在口语里也指同时周旋于多段感情的人。这层意思用不用、用到多深，尚未决定。</p>
+            <dl class="known">
+              <dt>作品名</dt><dd>海王遗孤</dd>
+              <dt>类型</dt><dd>恋爱模拟、视觉小说</dd>
+              <dt>文字</dt><dd>简体中文</dd>
+              <dt>性质</dt><dd>个人 demo，不商用</dd>
+              <dt>现状</dt><dd>只有这页入口，没有可玩正文</dd>
+            </dl>
+            <h3>宣传语备选</h3>
+            <p>封面用的是第一句。三句都可以整句扔掉。</p>
+            <ul class="alts">
+              <li>潮水会退。名字不会。</li>
+              <li>你继承的不是王冠，是一串还没说完的名字。</li>
+              <li>在别人的传闻里，把日子过成自己的。</li>
+            </ul>
+          </section>
+
+          <section id="story">
+            <h2 data-index="02">故事</h2>
+            <p>主线还没有写。下面这些问题决定之后，这一节就换成真正的剧情简介。</p>
+            <ol class="queries">
+              <li><span class="todo">TODO</span><p>「海王」在故事里指什么：一个人、一个绰号、一处地方，还是几层意思叠在一起？</p></li>
+              <li><span class="todo">TODO</span><p>口语里那层意思，用不用，用到什么程度才算越过你想要的线？</p></li>
+              <li><span class="todo">TODO</span><p>主人公是谁，用第几人称讲述，和标题是什么关系？</p></li>
+              <li><span class="todo">TODO</span><p>读者最先被抛进的是哪一个场景？</p></li>
+              <li><span class="todo">TODO</span><p>这版 demo 讲到哪里停：一天、一段关系，还是一个选择的后果？</p></li>
+              <li><span class="todo">TODO</span><p>结局准备几种，分不分路线？</p></li>
+              <li><span class="todo">TODO</span><p>语气偏冷、偏暖、偏喜剧，还是偏伤？</p></li>
+              <li><span class="todo">TODO</span><p>文字和画面的尺度停在哪里：全龄、青春，还是成人？</p></li>
+            </ol>
+          </section>
+
+          <section id="stage">
+            <h2 data-index="03">舞台</h2>
+            <p>地图还是一张没有标经纬的海图。地点可以很具体，也可以始终不点名。</p>
+            <ol class="queries">
+              <li><span class="todo">TODO</span><p>故事发生在什么年代？</p></li>
+              <li><span class="todo">TODO</span><p>地点是港口、海岛、内陆城市，还是一个不肯被叫出名字的地方？</p></li>
+              <li><span class="todo">TODO</span><p>世界靠近现实，还是海水里有不该存在的东西？</p></li>
+              <li><span class="todo">TODO</span><p>哪些场景会反复出现：家、学校、船、店，或别的房间？</p></li>
+            </ol>
+          </section>
+
+          <section id="cast">
+            <h2 data-index="04">人物</h2>
+            <p>没有预留假名。名单确定以前，只放一份档案要填的栏位。人增加时，按这张表往下抄即可。</p>
+            <table class="dossier">
+              <tbody>
+                <tr><th>姓名</th><td><span class="todo">TODO</span></td></tr>
+                <tr><th>怎么被称呼</th><td><span class="todo">TODO</span></td></tr>
+                <tr><th>在故事里的位置</th><td><span class="todo">TODO</span></td></tr>
+                <tr><th>和「海王」的关系</th><td><span class="todo">TODO</span></td></tr>
+                <tr><th>想让人记住的一点</th><td><span class="todo">TODO</span></td></tr>
+              </tbody>
+            </table>
+            <ol class="queries">
+              <li><span class="todo">TODO</span><p>登场的都有谁？谁是可以建立关系的对象？</p></li>
+              <li><span class="todo">TODO</span><p>关系对象的范围有没有限制？</p></li>
+              <li><span class="todo">TODO</span><p>不走恋爱线的时候，故事还能不能读完？</p></li>
+            </ol>
+          </section>
+
+          <section id="play">
+            <h2 data-index="05">玩法</h2>
+            <p>视觉小说常见的做法先记在这里，当作待决定的清单，不当作已经采用的设计。</p>
+            <ol class="queries">
+              <li><span class="todo">TODO</span><p>只靠阅读和分支，还是要有日程、数值或好感？</p></li>
+              <li><span class="todo">TODO</span><p>文字一次出一段，还是逐字出现？需不需要点击才继续？</p></li>
+              <li><span class="todo">TODO</span><p>要不要回溯、快进、跳过已经读过的句子？</p></li>
+              <li><span class="todo">TODO</span><p>要不要存档、画廊、音乐和音效？要不要配音？</p></li>
+              <li><span class="todo">TODO</span><p>选项在什么时候出现：话说到一半，还是收在一段的结尾？</p></li>
+            </ol>
+          </section>
+
+          <section id="make">
+            <h2 data-index="06">制作</h2>
+            <p>仓库里现在只有这一页和 <code>README.txt</code>。引擎还没选，所以游戏本体没有提前绑死在网页上。这页用浏览器直接打开就能看。</p>
+            <ol class="queries">
+              <li><span class="todo">TODO</span><p>引擎用自写网页、Ren'Py，还是别的？</p></li>
+              <li><span class="todo">TODO</span><p>立绘、背景和界面打算做到什么程度？</p></li>
+              <li><span class="todo">TODO</span><p>音乐从哪里来？</p></li>
+              <li><span class="todo">TODO</span><p>署名用什么名字？</p></li>
+              <li><span class="todo">TODO</span><p>这版 demo 做到哪一步，可以叫做做完？</p></li>
+            </ol>
+          </section>
+        </article>
+
+        <aside class="infobox" aria-label="基本资料">
+          <header>
+            <p>Entry</p>
+            <strong>基本资料</strong>
+          </header>
+          <dl>
+            <div><dt>名称</dt><dd>海王遗孤</dd></div>
+            <div><dt>种类</dt><dd>恋爱模拟<br>视觉小说</dd></div>
+            <div><dt>文字</dt><dd>简体中文</dd></div>
+            <div><dt>性质</dt><dd>个人演示</dd></div>
+            <div><dt>商业</dt><dd>否</dd></div>
+            <div><dt>可玩正文</dt><dd class="pending">尚无</dd></div>
+            <div><dt>引擎</dt><dd class="pending">待定</dd></div>
+            <div><dt>署名</dt><dd class="pending">待定</dd></div>
+            <div><dt>建档</dt><dd>2026-11</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="colophon">
+    <div class="wrap">
+      <p>海王遗孤 · 个人演示 · 不商用</p>
+      <p><em>The tide falls. The name stays.</em></p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var fill = document.getElementById("tide-fill");
+      var links = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+      var sections = links.map(function (link) {
+        return document.querySelector(link.getAttribute("href"));
+      }).filter(Boolean);
+
+      function onScroll() {
+        var doc = document.documentElement;
+        var max = doc.scrollHeight - window.innerHeight;
+        var ratio = max > 0 ? window.scrollY / max : 0;
+        fill.style.transform = "scaleY(" + Math.min(1, Math.max(0, ratio)) + ")";
+      }
+
+      if ("IntersectionObserver" in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var id = "#" + entry.target.id;
+            links.forEach(function (link) {
+              link.classList.toggle("is-current", link.getAttribute("href") === id);
+            });
+          });
+        }, { rootMargin: "-35% 0px -55% 0px", threshold: 0 });
+        sections.forEach(function (section) { observer.observe(section); });
+      }
+
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+    }());
+  </script>
+</body>
+</html>
